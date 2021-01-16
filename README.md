@@ -1,2 +1,7 @@
-# rm ds
-A tool to remove discord messages.
+# rmds
+A Discord cleanup tool. 
+
+## Usage
+	rmds
+		-i (SERVER ID)
+		(--noask)

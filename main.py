@@ -20,6 +20,10 @@ art = """
 authfile = open("auth.txt", "r")
 authToken = authfile.readlines()[0]
 
+msgremoved = 0
+channelerror = 0
+msgerror = 0
+
 c = ds.Client()
 
 async def get_target_server(c):
@@ -55,7 +59,9 @@ async def attack_server(server, c):
 			try:
 				await send_payload(channel, c)
 			except Exception as err:
-				print(f"Unable to wipe channel: {channel} err: {err}")
+				# print(f"Unable to wipe channel: {channel} err: {err}")
+				global channelerror
+				channelerror += 1
 				pass
 
 
@@ -78,8 +84,12 @@ async def send_payload(channel, c):
 		try:
 			print(f"[{i+1}/{user_messages_len}]\t \033[1m\033[91mrm\033[0m \t({m.id}) : \"{m.content}\"")
 			await m.delete()
+			global msgremoved
+			msgremoved += 1
 		except Exception as err:
 			print(f"Error: {err}")
+			global msgerror
+			msgerror += 1
 			pass
 
 
@@ -88,6 +98,9 @@ def init():
 	try:
 		print("\033[1mLogging in...\033[0m")
 		c.run(authToken, bot=False)
+
+		print(f"Deleted \033[92m\033[1m{msgremoved}\033[0m messages, unable to scan \033[93m\033[1m{channelerror}\033[0m channels.\n\033[91m\033[1m{msgerror}\033[0m message deletion errors.")
+
 	except Exception as err:
 		print("\033[1mFailed to login.\033[0m")
 		print(f"Error: {err}")
