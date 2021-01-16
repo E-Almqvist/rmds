@@ -31,7 +31,7 @@ async def get_target_server(c):
 	target = c.get_guild(int(inp))
 
 	if( target != None ):
-		await attack_server(target, c)
+		await clean_server(target, c)
 		await c.close()
 	else:
 		print(f"\nUnknown server {inp}")
@@ -44,7 +44,7 @@ async def on_ready():
 	print(f"\033[92mLogged in as \033[1m{c.user}\033[0m")
 	await get_target_server(c)
 
-async def attack_server(server, c):
+async def clean_server(server, c):
 	print(f"Wiping server:  \033[1m{server} \033[0m")
 
 	if( not key_valid("--noask") ):
